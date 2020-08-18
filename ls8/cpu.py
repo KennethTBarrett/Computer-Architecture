@@ -11,17 +11,8 @@ class CPU:
         self.ram = [0] * 256
         # Initialize registers
         self.reg = [0] * 8
-        # General-Purpose registers
-        self.IM = self.reg[5] # Interrupt Mask
-        self.IS = self.reg[6] # Interrupt Status 
-        self.SP = 0xF4 # Stack Pointer 
-        # Special-Purpose Registers
         self.PC = 0 # Program Counter
-        self.IR = 0 # Instruction Register
-        self.MAR = 0 # Memory Address Register
-        self.MDR = 0 # Memory Data Register
-        self.FL = 0 # Flag
-        self.halt = False
+        self.running = True
 
     def ram_read(self, address):
         # Simply return RAM at specified address
@@ -46,13 +37,15 @@ class CPU:
 
                 address += 1 # Increase address location
 
-
     def alu(self, op, reg_a, reg_b):
         """ALU operations."""
 
         if op == "ADD":
             self.reg[reg_a] += self.reg[reg_b]
-        #elif op == "SUB": etc
+        elif op == "SUB":
+            self.reg[reg_a] -= self.reg[reg_b]
+        elif op == "MUL":
+            self.reg[reg_a] *= self.reg[reg_b]
         else:
             raise Exception("Unsupported ALU operation")
 
@@ -76,76 +69,48 @@ class CPU:
 
         print()
 
+
     def run(self):
         """Run the CPU."""
-        HLT = 0b00000001 # Halt instruction handler
+        HLT = 0b00000001 # Halt instruction
         LDI = 0b10000010 # LDI instruction
         PRN = 0b01000111 # PRN instruction
         MUL = 0b10100010 # Multiply instruction
-        RET = 0b00010001 # Return
-        PUSH = 0b01000101 # Push (Stack)
-        POP = 0b01000110  # Pop (Stack)
-        CALL = 0b01010000 # Call
-        CMP = 0b10100111
-        JMP = 0b01010100
-        JEQ = 0b01010101
-        JNE = 0b01010110
 
         # Here's a brutal if-else block. TODO: Optimize
-        self.halt = False
-        while self.halt is False:
-            if self.ram[self.PC] == LDI:
-                self.reg[self.ram[self.PC + 1]] = self.ram[self.PC + 2]
-                self.PC += 3
+        while self.running:
+            instruction_register = self.ram[self.PC]
+            reg_a = self.ram[self.PC + 1]
+            reg_b = self.ram[self.PC + 2]
 
-            elif self.ram[self.PC] == PRN:
-                print(self.reg[self.ram[self.PC + 1]])
-                self.PC += 2    
-
-            elif self.ram[self.PC] == MUL:      
-                self.alu(MUL, self.ram[self.PC + 1], self.ram[self.PC + 2])
-                self.PC += 3
-
-            elif self.ram[self.PC] == PUSH: 
-                self.push(self.ram[self.PC + 1])
-
-            elif self.ram[self.PC] == POP:
-                self.pop(self.ram[self.PC + 1])  
-
-            elif self.ram[self.PC] == CALL: 
-                self.call(self.ram_read(self.PC + 1))
-
-            elif self.ram[self.PC] == RET:    
-                self.ret() 
-
-            elif self.ram[self.PC] == CMP:      
-                self.alu(CMP, self.ram[self.PC + 1], self.ram[self.PC + 2])
-                self.PC += 3       
-
-            elif self.ram[self.PC] == JMP:   
-                self.jmp(self.ram[self.PC + 1]) 
-
-            elif self.ram[self.PC] == JEQ:   
-                self.jeq(self.ram[self.PC + 1])    
-
-            elif self.ram[self.PC] == JNE:   
-                self.jne(self.ram[self.PC + 1])           
-
-            elif self.ram[self.PC] == HLT:
-                self.hlt()         
-
+            if instruction_register == HLT:
+                self.hlt()
+            elif instruction_register == LDI:
+                self.ldi(reg_a, reg_b)
+            elif instruction_register == PRN:
+                self.prn(reg_a)
+            elif instruction_register == MUL:
+                self.mul(reg_a, reg_b)
             else:
-                print('unknown instruction')
+                print(f"'{instruction_register}' at address '{self.PC}' not a recognized instruction.")
+                self.PC += 1
 
     def hlt(self):
-        """Halt"""
-        self.halt = True
+        """Halt - Exit"""
+        self.running = False
+        self.PC += 1
         sys.exit(0)
 
-    def ldi(self, reg_1, reg_2):
-        self.reg[reg_1] = self.ram[reg_2]
+    def ldi(self, reg_a, reg_b):
+        """Essentially acts as a pointer"""
+        self.reg[reg_a] = reg_b
         self.PC += 3
 
-    def prn(self, reg_1):
-        print(self.reg[self.ram[reg_1]])
-        self.PC += 2    
+    def prn(self, reg_a):
+        """Prints"""
+        print(self.reg[reg_a])
+        self.PC += 2
+
+    def mul(self, reg_a, reg_b):
+        self.reg[reg_a] *= self.reg[reg_b]
+        self.PC += 3
