@@ -12,6 +12,7 @@ class CPU:
         # Initialize registers
         self.reg = [0] * 8
         self.PC = 0 # Program Counter
+        self.SP = 7  # Stack Pointer
         self.running = True
 
     def ram_read(self, address):
@@ -39,7 +40,6 @@ class CPU:
 
     def alu(self, op, reg_a, reg_b):
         """ALU operations."""
-
         if op == "ADD":
             self.reg[reg_a] += self.reg[reg_b]
         elif op == "SUB":
@@ -57,8 +57,6 @@ class CPU:
 
         print(f"TRACE: %02X | %02X %02X %02X |" % (
             self.pc,
-            #self.fl,
-            #self.ie,
             self.ram_read(self.pc),
             self.ram_read(self.pc + 1),
             self.ram_read(self.pc + 2)
@@ -76,8 +74,9 @@ class CPU:
         LDI = 0b10000010 # LDI instruction
         PRN = 0b01000111 # PRN instruction
         MUL = 0b10100010 # Multiply instruction
+        PUSH = 0b01000101 # Push instruction
+        POP = 0b01000110  # Pop instruction
 
-        # Here's a brutal if-else block. TODO: Optimize
         while self.running:
             instruction_register = self.ram[self.PC]
             reg_a = self.ram[self.PC + 1]
@@ -91,6 +90,10 @@ class CPU:
                 self.prn(reg_a)
             elif instruction_register == MUL:
                 self.mul(reg_a, reg_b)
+            elif instruction_register == PUSH:
+                self.push(reg_a)
+            elif instruction_register == POP:
+                self.pop(reg_a)
             else:
                 print(f"'{instruction_register}' at address '{self.PC}' not a recognized instruction.")
                 self.PC += 1
@@ -112,5 +115,21 @@ class CPU:
         self.PC += 2
 
     def mul(self, reg_a, reg_b):
+        "Multiplies"
         self.reg[reg_a] *= self.reg[reg_b]
         self.PC += 3
+
+    def push(self, reg_a):
+        # Decrease Stack Pointer
+        self.SP =- 1
+        # Write to RAM.
+        self.ram[self.SP] = self.reg[reg_a]
+        self.PC += 2
+    
+    def pop(self, reg_a):
+        # Increase Stack Pointer
+        self.SP += 1
+        # Set Register at reg_a to be the RAM entry of Stack Pointer
+        self.reg[reg_a] = self.ram[self.SP]
+        self.PC += 2
+
