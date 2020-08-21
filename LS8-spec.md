@@ -179,7 +179,7 @@ Glossary:
 
 Machine code values shown in both binary and hexadecimal.
 
-### ADD
+### ADD ✓
 
 *This is an instruction handled by the ALU.*
 
@@ -193,7 +193,7 @@ Machine code:
 A0 0a 0b
 ```
 
-### AND
+### AND ✓
 
 *This is an instruction handled by the ALU.*
 
@@ -208,7 +208,7 @@ Machine code:
 A8 0a 0b
 ```
 
-### CALL register
+### CALL register ✓
 
 `CALL register`
 
@@ -224,7 +224,7 @@ Machine code:
 50 0r
 ```
 
-### CMP
+### CMP ✓
 
 *This is an instruction handled by the ALU.*
 
@@ -260,7 +260,7 @@ Machine code:
 66 0r
 ```
 
-### DIV
+### DIV ✓
 
 *This is an instruction handled by the ALU.*
 
@@ -278,7 +278,7 @@ Machine code:
 A3 0a 0b
 ```
 
-### HLT
+### HLT ✓
 
 `HLT`
 
@@ -338,7 +338,7 @@ Machine code:
 13
 ```
 
-### JEQ
+### JEQ ✓
 
 `JEQ register`
 
@@ -350,7 +350,7 @@ Machine code:
 55 0r
 ```
 
-### JGE
+### JGE ✓
 
 `JGE register`
 
@@ -362,7 +362,7 @@ in the given register.
 5A 0r
 ```
 
-### JGT
+### JGT ✓
 
 `JGT register`
 
@@ -375,7 +375,7 @@ Machine code:
 57 0r
 ```
 
-### JLE
+### JLE ✓
 
 `JLE register`
 
@@ -387,7 +387,7 @@ register.
 59 0r
 ```
 
-### JLT
+### JLT ✓
 
 `JLT register`
 
@@ -400,7 +400,7 @@ Machine code:
 58 0r
 ```
 
-### JMP
+### JMP ✓
 
 `JMP register`
 
@@ -414,7 +414,7 @@ Machine code:
 54 0r
 ```
 
-### JNE
+### JNE ✓
 
 `JNE register`
 
@@ -441,7 +441,7 @@ Machine code:
 83 0a 0b
 ```
 
-### LDI
+### LDI ✓
 
 `LDI register immediate`
 
@@ -453,7 +453,7 @@ Machine code:
 82 0r ii
 ```
 
-### MOD
+### MOD ✓
 
 *This is an instruction handled by the ALU.*
 
@@ -471,7 +471,7 @@ Machine code:
 A4 0a 0b
 ```
 
-### MUL
+### MUL ✓
 
 *This is an instruction handled by the ALU.*
 
@@ -485,7 +485,7 @@ Machine code:
 A2 0a 0b
 ```
 
-### NOP
+### NOP ✓
 
 `NOP`
 
@@ -511,7 +511,7 @@ Machine code:
 69 0r
 ```
 
-### OR
+### OR ✓
 
 *This is an instruction handled by the ALU.*
 
@@ -526,7 +526,7 @@ Machine code:
 AA 0a 0b
 ```
 
-### POP
+### POP ✓
 
 `POP register`
 
@@ -556,7 +556,7 @@ Machine code:
 48 0r
 ```
 
-### PRN
+### PRN ✓
 
 `PRN register` pseudo-instruction
 
@@ -571,7 +571,7 @@ Machine code:
 47 0r
 ```
 
-### PUSH
+### PUSH ✓
 
 `PUSH register`
 
@@ -587,7 +587,7 @@ Machine code:
 45 0r
 ```
 
-### RET
+### RET ✓
 
 `RET`
 
@@ -639,7 +639,7 @@ Machine code:
 84 0a 0b
 ```
 
-### SUB
+### SUB ✓
 
 *This is an instruction handled by the ALU.*
 
@@ -654,7 +654,7 @@ Machine code:
 A1 0a 0b
 ```
 
-### XOR
+### XOR ✓
 
 *This is an instruction handled by the ALU.*
 
