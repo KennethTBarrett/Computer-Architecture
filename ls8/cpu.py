@@ -102,7 +102,7 @@ class CPU:
                 operation = getattr(self, operation_key)
                 operation()
 
-    def alu(self, op, reg_a, reg_b):
+    def alu(self, op, reg_a, reg_b=None):
         """ALU operations."""
 
         # Multiplication operation.
@@ -169,7 +169,7 @@ class CPU:
         elif op == "XOR":
             self.reg[reg_a] = self.reg[reg_a] ^ self.reg[reg_b]
             self.PC += 3
-
+        
         # If ALU Operation Unsupported, raise Exception.
         else:
             raise Exception("Unsupported ALU operation")
